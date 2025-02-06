@@ -1,48 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What is my ip</title>
+    <title>What is MyIP</title>
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <script src="/js/index.js"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
 </head>
+
 <body>
-
-    <style>
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            width: 100%;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding-top: 100px;
-        }
-
-        td {
-            padding: 10px;
-        }
-    </style>
-    <div class="container">
-        <table>
-            <h2>Your Public IP Address is {{ip.ip}}</h2>
-            <tr>
-                <td>ISP </td>
-                <td>{{ip.org}}</td>
-            </tr>
-            <tr>
-                <td>City</td>
-                <td>{{ip.city}}</td>
-            </tr>
-            <tr>
-                <td>State/Region</td>
-                <td>{{ip.region}}</td>
-            </tr>
-            <tr>
-                <td>Country</td>
-                <td>{{ip.country}}</td>
-            </tr>
-        </table>
+    <div class="header">
+        <div class="logo-img"><img src="/img/ip_icon.webp" alt="IP ICON | WHAT IS MY IP" width="58px" height="auto"></div>
+        <div class="text"><h2>What is MyIP</h2></div>
     </div>
+    <div class="container">
+        <h2>Your Public <span class="white">{{ip.ipv}}</span> Address is <span class="white">{{ip.ip}}</span></h2>
+        <div class="ip-box">
+            <div class="ip-details">
+                <table>
+                    <tr>
+                        <td>ISP </td>
+                        <td><span class="white">{{ip.isp}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td><span class="white">{{ip.city}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>State/Region</td>
+                        <td><span class="white">{{ip.region}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td><span class="white"><img src="{{ip.country_flag}}" alt="Country Flag" height="12px" width="auto"> {{ip.country_name}} ({{ip.country_official_name}})</span></td>
+                    </tr>
+                    <tr>
+                        <td>Is VPN or Proxy?</td>
+                        <td><span class="white">{{ip.proxy}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Latitude</td>
+                        <td><span class="white">X : {{ip.x}} , Y : {{ip.y}}</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="ip-map">
+                <div id="osm-map"></div>
+                <p>View in <a href="https://www.openstreetmap.org/?mlat={{ip.x}}&mlon={{ip.y}}#map=8/{{ip.x}}/{{ip.y}}" class="white" target="_blank">OPENSTREETVIEW</a> for detailed information. This map does not represent the actual location if you are using shared ip address. <a href="#sharedip">Learn more about shared ip</a> </p>
+            </div>
+        </div>
+    </div>
+    <div class="blog">
+        <div class="question">
+            <h3>What is IP Address?</h3>
+            <p>An IP address, which stands for "Internet Protocol address," is a unique numerical label assigned to every device
+            connected to the internet, allowing it to be identified and communicate with other devices online; essentially acting
+            like a digital address for sending and receiving data across the network.</p>
+        </div>
+        <div class="question">
+            <h3>What is a public IP address?</h3>
+            <p>A public IP address is an IP address that can be accessed over the Internet. Like postal address used to deliver a postal mail to your home, a public IP address is the globally unique IP address assigned to a computing device.</p>
+        </div>
+        <div class="question">
+            <h3>What is a private IP address?</h3>
+            <p>A private IP address is the address space allocated by InterNIC to allow organizations to create their own private network. There are three IP blocks (1 class A, 1 class B and 1 class C) reserved for a private use. The computers, tablets, and smartphones sitting behind your home router are all assigned private IP addresses.</p> 
+        </div>
+        <div class="question">
+            <h3>What is IPv4?</h3>
+            <p>IPv4, or Internet Protocol version 4, is the original addressing system of the Internet, introduced in 1983. It uses a
+            32-bit address scheme, which theoretically allows for over 4 billion unique addresses (2^32). IPv4 addresses are
+            typically displayed in decimal format, divided into four octets separated by dots. For example, 192.168.1.1 is a common
+            IPv4 address you might find in a home network.</p>
+        </div>
+        <div class="question">
+            <h3>What is IPv6?</h3>
+            <p>Another most common version of the Internet Protocol currently is IPv6. The well-known IPv6 protocol is being used and
+            deployed more often, especially in mobile phone markets. IPv6 was designed by the Internet Engineering Task Force (IETF)
+            in December 1998 with the purpose of superseding IPv4 due to the global exponentially growing internet of users.
+            
+            IPv6 stands for Internet Protocol version 6. IPv6 is the new version of Internet Protocol, which is way better than IPv4
+            in terms of complexity and efficiency. IPv6 is written as a group of 8 hexadecimal numbers separated by colon (:). It
+            can be written as 128 bits of 0s and 1s.</p>
+        </div>
+        <div class="question">
+            <h3>What is a VPN?</h3>
+            <p>A VPN, or Virtual Private Network, allows you to create a secure connection to another network over the Internet. VPNs can be used to access region-restricted websites, shield your browsing activity from prying eyes on public Wi-Fi, and more.</p>
+        </div>
+        <div class="question">
+            <h3>What is a Proxy?</h3>
+            <p>A proxy server is an intermediary server through which your traffic gets routed. The internet servers you visit see only the IP address of that proxy server and not your IP address. When those servers send information back to you, it goes to the proxy server, which then routes it to you.</p>
+        </div>
+        <div class="question" id="sharedip">
+            <h3>What is shared ip address?</h3>
+            <p>A "shared IP" refers to an internet protocol (IP) address that is used by multiple users or websites simultaneously,
+            meaning several entities share the same numerical label to access the internet, unlike a dedicated IP which is assigned
+            solely to one user; this is commonly found in shared hosting environments where multiple websites on the same server
+            utilize the same IP address.</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p class="developer"> A Project by <a href="https://w3nabil.github.io/">@w3nabil</a></p>
+        <p>This webpage is built for test purposes only, No user data is being stored. No security tests were made. Thank you for testing my site.</p>
+    </div>
+    <script>
+            var element = document.getElementById('osm-map');
+            element.style = 'height:300px;';
+
+            // Create Leaflet map on map element.
+            var map = L.map(element);
+
+            // Add OSM tile layer to the Leaflet map.
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            // Target's GPS coordinates.
+            var target = L.latLng('{{ip.x}}', '{{ip.y}}');
+
+            // Set map's center to target with zoom 14.
+            map.setView(target, 15);
+
+            // Place a marker on the same location.
+            L.marker(target).addTo(map);
+
+            var circle = L.circle(["{{ip.x}}", "{{ip.y}}"], {
+                    color: '#3498db',
+                    fillColor: '#3498db',
+                    fillOpacity: 0.5,
+                    radius: 100
+                }).addTo(map);
+    </script>
 </body>
+
 </html>

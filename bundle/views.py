@@ -8,7 +8,7 @@ views = Blueprint('views', __name__, template_folder='public', static_url_path='
 @views.route('/')
 def index():
     userip = request.headers.get('X-forwarded-for', request.remote_addr)
-    callapi = requests.get(f'https://ipinfo.io/{userip}/json?{os.getenv('TOKEN')}')
+    callapi = requests.get(f"https://ipinfo.io/{userip}/json?{os.getenv('TOKEN')}")
     ip = callapi.json()
 
     if ip.get("status"):
